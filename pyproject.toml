@@ -1,0 +1,26 @@
+[project]
+name = "learn-claude-code"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "google-genai (>=1.70.0,<2.0.0)",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+# 包含根目录下的 src 文件夹作为包
+packages = [{include = "src"}]
+
+[tool.poetry.scripts]
+# 格式：命令 = "包名.文件名:函数名"
+# 因为文件在 src 文件夹里，所以路径要以 src. 开头
+agent_loop = "src.the_agent_loop:agent_loop"
