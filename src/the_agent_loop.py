@@ -5,6 +5,11 @@ SDK 自动处理函数调用循环的版本
 """
 import os
 import subprocess
+
+# 设置代理（如果需要）
+os.environ["http_proxy"] = "http://127.0.0.1:10808"
+os.environ["https_proxy"] = "http://127.0.0.1:10808"
+
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
