@@ -23,4 +23,6 @@ packages = [{include = "src"}]
 [tool.poetry.scripts]
 # 格式：命令 = "包名.文件名:函数名"
 # 因为文件在 src 文件夹里，所以路径要以 src. 开头
-agent_loop = "src.the_agent_loop:agent_loop"
+agent_loop = "src.s01_the_agent_loop:agent_loop"
+agent_tools = "src.s02_the_agent_tools:agent_tools"
+agent_todo_tools = "src.s03_the_agent_todo_tools:agent_todo_tools"

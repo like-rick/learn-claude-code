@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 """
-s01_agent_loop.py - The Agent Loop
-SDK 自动处理函数调用循环的版本
+s02_agent_tools.py - The Agent Loop Tools
+SDK 自动处理函数调用循环的版本, 多tools
 """
 import os
 import subprocess
-
-# 设置代理（如果需要）
-os.environ["http_proxy"] = "http://127.0.0.1:10808"
-os.environ["https_proxy"] = "http://127.0.0.1:10808"
-
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -54,7 +49,51 @@ def bash(command: str) -> str:
     return result
 
 
-def agent_loop():
+def read_file(file_path: str) -> str:
+    """
+    读取并返回文件的内容。
+    
+    当你需要查看文件内容、检查代码或分析配置文件时使用此工具。
+    
+    Args:
+        file_path: 文件的绝对路径或相对路径。
+    
+    Returns:
+        文件内容字符串，如果出错则返回错误信息。
+    """
+    print(f"\033[33m[Reading] {file_path}\033[0m")
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        print(f"\033[90m[Read {len(content)} chars]\033[0m")
+        return content
+    except Exception as e:
+        return f"Error reading file: {str(e)}"
+
+
+def write_file(file_path: str, content: str) -> str:
+    """
+    将内容写入文件。如果文件不存在则创建，存在则覆盖。
+    
+    当你需要创建新文件或修改现有文件内容时使用此工具。
+    
+    Args:
+        file_path: 文件的绝对路径或相对路径。
+        content: 要写入文件的字符串内容。
+    
+    Returns:
+        成功或失败的状态信息。
+    """
+    print(f"\033[33m[Writing] {file_path}\033[0m")
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        return f"Successfully wrote {len(content)} chars to {file_path}"
+    except Exception as e:
+        return f"Error writing file: {str(e)}"
+
+
+def agent_tools():
     history = []
     print("\033[32mAgent Ready (Type 'exit' to quit)\033[0m")
     
@@ -75,7 +114,7 @@ def agent_loop():
             model=MODEL_ID,
             contents=history,
             config={
-                "tools": [bash],
+                "tools": [bash, read_file, write_file],
                 "system_instruction": SYSTEM,
             },
         )
@@ -90,4 +129,4 @@ def agent_loop():
 
 
 if __name__ == "__main__":
-    agent_loop()
+    agent_tools()
