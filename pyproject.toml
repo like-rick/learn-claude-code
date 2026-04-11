@@ -26,3 +26,5 @@ packages = [{include = "src"}]
 agent_loop = "src.s01_the_agent_loop:agent_loop"
 agent_tools = "src.s02_the_agent_tools:agent_tools"
 agent_todo_tools = "src.s03_the_agent_todo_tools:agent_todo_tools"
+agent_subagent = "src.s04_subagent:run_parent_agent"
+agent_skill = "src.s05_agent_skills:run_agent_skill"
