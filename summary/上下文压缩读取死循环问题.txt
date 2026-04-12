@@ -1,0 +1,29 @@
+1. 用户输入：当前目录下有哪些文件 
+2. 大模型识别到 应该调用 ls -la 
+3. 工具调用 ls -la 发现超过 最大展示字数了，然后做持久化缓存压缩，工具只告诉大模型一个预览的信息，完整还是需要读持久化的文件 
+4. 大模型根据工具返回的结果，触发read_file工具，读了持久化的文件，发现又超多了最大展示字数
+...
+后面会循环
+
+
+解决方案：
+1. 给 read_file 加“分页机制”
+`
+"properties": {
+    "path": {"type": "string"},
+    "offset": {"type": "integer"},
+    "limit": {"type": "integer"}
+}
+`
+2. 让模型“不要读全文”（Prompt层修复）
+When a tool returns a persisted-output preview:
+- DO NOT read the full file unless absolutely necessary
+- Prefer using the preview
+- If needed, read only partial content
+
+推荐：
+✅ 必做
+    ✅ 禁止 persist 文件再次 persist
+    ✅ read_file 加 limit / offset
+✅ 可选
+    ✅ prompt 限制“不要读全量”
